@@ -70,6 +70,25 @@ GIT
       diff-lcs
 
 GIT
+  remote: https://github.com/rails-api/active_model_serializers.git
+  revision: ab47e983f587e93ece7ab2552537d1475a5eb234
+  branch: 0-10-stable
+  specs:
+    active_model_serializers (0.10.10)
+      actionpack (>= 4.1, < 6.1)
+      activemodel (>= 4.1, < 6.1)
+      case_transform (>= 0.2)
+      jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
+
+GIT
+  remote: https://github.com/rails/actionpack-action_caching.git
+  revision: 6c48c98d0b59d4868ac71817bf46cbdee26467ff
+  branch: master
+  specs:
+    actionpack-action_caching (1.2.0)
+      actionpack (>= 4.0.0)
+
+GIT
   remote: https://github.com/shikimori/mal_parser.git
   revision: 249f7461862e269360a3139917c2cad8a5275844
   specs:
@@ -113,19 +132,12 @@ GEM
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    actionpack-action_caching (1.2.0)
-      actionpack (>= 4.0.0, < 6)
     actionview (5.2.3)
       activesupport (= 5.2.3)
       builder (~> 3.1)
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active_model_serializers (0.10.9)
-      actionpack (>= 4.1, < 6)
-      activemodel (>= 4.1, < 6)
-      case_transform (>= 0.2)
-      jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
     active_record_query_trace (1.6.2)
     activejob (5.2.3)
       activesupport (= 5.2.3)
@@ -720,8 +732,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  actionpack-action_caching
-  active_model_serializers
+  actionpack-action_caching!
+  active_model_serializers!
   active_record_query_trace
   activerecord-import
   acts_as_list
