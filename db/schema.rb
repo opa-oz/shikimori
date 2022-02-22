@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_21_204612) do
+ActiveRecord::Schema.define(version: 2022_02_21_204544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -85,7 +85,6 @@ ActiveRecord::Schema.define(version: 2022_02_21_204612) do
     t.bigint "entry_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "score_2", default: "0.0", null: false
     t.index ["entry_type", "entry_id"], name: "index_anime_stats_on_entry_type_and_entry_id", unique: true
   end
 
