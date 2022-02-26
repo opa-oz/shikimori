@@ -8,8 +8,6 @@ class Animes::CritiquesController < AnimesController # rubocop:disable ClassLeng
   before_action :add_breadcrumbs, except: [:index]
   skip_before_action :og_meta
 
-  RULES_TOPIC_ID = 299_770
-
   def index
     @collection = ::Critiques::Query
       .call(@resource.object, {
@@ -24,11 +22,12 @@ class Animes::CritiquesController < AnimesController # rubocop:disable ClassLeng
 
   def new
     og page_title: i18n_t('new_critique')
-    @rules_topic = Topics::TopicViewFactory.new(false, false).find_by(id: RULES_TOPIC_ID)
+    render :form
   end
 
   def edit
     og page_title: i18n_t('edit_critique')
+    render :form
   end
 
   def create
@@ -42,7 +41,6 @@ class Animes::CritiquesController < AnimesController # rubocop:disable ClassLeng
       )
     else
       new
-      render :new
     end
   end
 
@@ -57,7 +55,6 @@ class Animes::CritiquesController < AnimesController # rubocop:disable ClassLeng
       )
     else
       edit
-      render :edit
     end
   end
 

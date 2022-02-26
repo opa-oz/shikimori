@@ -1,5 +1,6 @@
 class ClubsController < ShikimoriController
-  load_and_authorize_resource :club, except: %i[index autocomplete]
+  load_and_authorize_resource :club, except: %i[index autocomplete edit]
+  load_resource :club, only: %i[edit]
 
   before_action { og page_title: i18n_i('Club', :other) }
 
@@ -9,6 +10,7 @@ class ClubsController < ShikimoriController
   before_action :restrict_domain, if: :resource_id
 
   before_action :set_breadcrumbs
+  before_action :restrict_private, if: :resource_id
 
   UPDATE_PARAMS = [
     :name,
@@ -17,6 +19,7 @@ class ClubsController < ShikimoriController
     :display_images,
     :comment_policy,
     :topic_policy,
+    :page_policy,
     :image_upload_policy,
     :logo,
     :is_censored,
@@ -71,9 +74,15 @@ class ClubsController < ShikimoriController
   end
 
   def edit
-    og page_title: t(:settings)
-    og page_title: t("clubs.page.pages.#{params[:section]}")
     @section = params[:section]
+    if @section == 'pages'
+      authorize! :edit_pages, @resource
+    else
+      authorize! :edit, @resource
+    end
+
+    og page_title: t(:settings)
+    og page_title: t("clubs.page.pages.#{@section}")
   end
 
   def update
@@ -161,6 +170,19 @@ private
 
   def restrict_domain
     raise ActiveRecord::RecordNotFound if @resource.locale != locale_from_host
+  end
+
+  def restrict_private
+    is_private = @club.censored? && !@club.join_policy_free? && !@club.comment_policy_free?
+    return unless is_private
+
+    is_access_allowed = user_signed_in? && (
+      @resource.member?(current_user) ||
+      current_user.forum_moderator? ||
+      can?(:manage, @resource)
+    )
+
+    render :private_access unless is_access_allowed
   end
 
   def restrict_censored

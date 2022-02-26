@@ -1,0 +1,33 @@
+- if local_assigns[:club_page_id]
+  - model = ClubPage.find_by id: local_assigns[:club_page_id]
+- elsif local_assigns[:club_id]
+  - model = Club.find_by id: local_assigns[:club_id]
+- elsif local_assigns[:topic_id]
+  - model = Topic.find_by id: local_assigns[:topic_id]
+
+- if model
+  = cache model do
+    - if local_assigns[:club_page_id]
+      - text = model.text
+      - model_name = "#{model.club.name} -> #{model.name}"
+      - model_url = club_club_page_url model.club, model
+    - elsif local_assigns[:club_id]
+      - text = model.description
+      - model_name = model.name
+      - model_url = club_url model
+    - elsif local_assigns[:topic_id]
+      - text = model.body
+      - model_name = model.title
+      - model_url = UrlGenerator.instance.topic_url model
+
+    - if text.present?
+      .m8
+        b.text-red
+          ' Пожалуйста, внимательно прочитай правила
+          - if local_assigns[:is_verison]
+            | перед внесением правок!
+          - else
+            | раздела!
+      .b-text_with_paragraphs.m20
+        - model_bbcode = "[url=#{model_url}]#{model_name}[/url]"
+        = BbCodes::Text.call "[spoiler_block=Правила is-fullwidth is-centered]#{text}[br][br][right]Обсудить правила можно на странице #{model_bbcode}[/right][/spoiler_block]"
